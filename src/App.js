@@ -1,7 +1,6 @@
 import './App.css';
 import React, { useState } from 'react';
 import { Question } from './components/question';
-import { QuestionPartial } from './components/question-partial';
 import { Result } from './components/result';
 import questions from './data/questions.json';
 
@@ -30,9 +29,7 @@ function App() {
   return (
     <div className="App">
       <Question answers={answers} setAnswers={handleAnswers} questions={questions} />
-      <hr/>
       <Question key={"d"+group+pointer} pointer={pointer} answers={answers} setAnswers={handleAnswers} questions={questions} />
-      <hr/>
       <Result answers={answers} questions={questions} />
 
       pointer: {pointer} <br/>

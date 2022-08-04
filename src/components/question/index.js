@@ -1,4 +1,5 @@
 import {useState, useCallback} from "react";
+import styles from './style.module.css';
 
 export const Question = ({questions, setAnswers, pointer}) => {
   const [date, setDate] = useState();
@@ -9,9 +10,13 @@ export const Question = ({questions, setAnswers, pointer}) => {
   };
 
   return (
-    <div>
-      simulate date:
-      <input type="date" name="date" value={date} onChange={(e)=>{setDate(e.target.value)}}/>
+    <div className={styles.box}>
+      <h3>{pointer ? "частичное заполнение " + pointer + "/" + questions.questions.length : "полный опросник"}</h3>
+
+      <div className={styles.date}>
+        simulate date:
+        <input type="date" name="date" value={date} onChange={(e)=>{setDate(e.target.value)}}/>
+      </div>
       {
         questions.questions.map((item)=>{
           if(pointer && item.id != pointer){
@@ -27,8 +32,8 @@ export const Question = ({questions, setAnswers, pointer}) => {
                   const v = item.choice[key];
                   return (
                     <div>
-                      <input type="radio" name={'a'+item.id} value={key} onChange={(e)=>{setAns({...ans, ...{['a'+item.id]: key}})}} />
-                      {v}
+                      <label><input type="radio" name={'a'+item.id} value={key} onChange={(e)=>{setAns({...ans, ...{['a'+item.id]: key}})}} />
+                      {v}</label>
                     </div>
                   );
                 })
