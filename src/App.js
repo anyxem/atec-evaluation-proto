@@ -1,23 +1,42 @@
-import logo from './logo.svg';
 import './App.css';
+import React, { useState } from 'react';
+import { Question } from './components/question';
+import { QuestionPartial } from './components/question-partial';
+import { Result } from './components/result';
+import questions from './data/questions.json';
 
 function App() {
+  const [answers, setAnswers] = useState([]);
+  const [pointer, setPointer] = useState(1);
+  const [group, setGroup] = useState(1);
+
+  const handleAnswers = (ans, pointer) => {
+    console.log(ans);
+    if(pointer){
+      setAnswers([...answers, {...ans, group}]);
+      console.log('ans.pointer ', pointer );
+      console.log('questions.questions.length ', questions.questions.length );
+      if(pointer > questions.questions.length) {
+        setPointer(1);
+        setGroup(group + 1);
+      } else {
+        setPointer(pointer);
+      }
+    } else {
+      setAnswers([...answers, ans]);
+    }
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Question answers={answers} setAnswers={handleAnswers} questions={questions} />
+      <hr/>
+      <Question key={"d"+group+pointer} pointer={pointer} answers={answers} setAnswers={handleAnswers} questions={questions} />
+      <hr/>
+      <Result answers={answers} />
+
+      pointer: {pointer} <br/>
+      group: {group}
     </div>
   );
 }
