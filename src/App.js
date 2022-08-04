@@ -33,7 +33,7 @@ function App() {
       <hr/>
       <Question key={"d"+group+pointer} pointer={pointer} answers={answers} setAnswers={handleAnswers} questions={questions} />
       <hr/>
-      <Result answers={answers} />
+      <Result answers={answers} questions={questions} />
 
       pointer: {pointer} <br/>
       group: {group}

@@ -1,5 +1,8 @@
-export const Result = ({ result, answers }) => {
+import Chart from 'react-apexcharts'
+
+export const Result = ({ result, answers, questions }) => {
   const process = {};
+  const qcount = questions.questions.length;
 
   console.log("answers:", JSON.stringify(answers[0], null, 2));
 
@@ -44,7 +47,7 @@ export const Result = ({ result, answers }) => {
     const predict_last = orderedFinal[Object.keys(orderedFinal)[Object.keys(orderedFinal).length - 1]];
     console.log(predict_last);
 
-    if(Object.keys(predict_last).length < 2) {
+    if(Object.keys(predict_last).length < qcount) {
       console.log('predict required');
       const predict_prev = orderedFinal[Object.keys(orderedFinal)[Object.keys(orderedFinal).length - 2]];
       const predict_ans = {...predict_prev, ...predict_last};
@@ -63,6 +66,43 @@ export const Result = ({ result, answers }) => {
     },
     {}
   );
+
+  const options = {
+    chart: {
+      height: 350,
+      type: 'line',
+      zoom: {
+        enabled: false
+      }
+    },
+    forecastDataPoints: {
+      count: is_last_predicted ? 1 : 0,
+    },
+    dataLabels: {
+      enabled: false
+    },
+    stroke: {
+      curve: 'smooth'
+    },
+    title: {
+      text: 'Trends by Month',
+      align: 'left'
+    },
+    grid: {
+      row: {
+        colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+        opacity: 0.5
+      },
+    },
+    xaxis: {
+      categories: Object.keys(finalCalculation),
+    }
+  };
+
+  const series = [{
+    name: "score",
+    data: Object.values(finalCalculation)
+  }];
 
 
   return <>result
@@ -83,5 +123,7 @@ export const Result = ({ result, answers }) => {
     <br/>
     {is_last_predicted? 'predicted' : 'real'}
   </pre>
+
+    <Chart options={options} series={series} type="line" height={350} />
   </>
 }
